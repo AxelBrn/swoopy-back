@@ -57,7 +57,7 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "unit:test": "php bin/phpunit --colors=always --coverage-text || ./vendor/bin/phpunit --colors=always",
+        "unit:test": "php bin/phpunit tests --colors=always --coverage-text",
         "analyse": ".\\vendor\\bin\\phpstan analyse src tests --ansi || ./vendor/bin/phpstan analyse src tests --ansi"
     },
     "conflict": {
