@@ -57,8 +57,8 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "unit:test": "php bin/phpunit --colors=always --coverage-text",
-        "analyse": ".\\vendor\\bin\\phpstan analyse src tests --ansi"
+        "unit:test": "php bin/phpunit --colors=always --coverage-text || ./vendor/bin/phpunit --colors=always",
+        "analyse": ".\\vendor\\bin\\phpstan analyse src tests --ansi || ./vendor/bin/phpstan analyse src tests --ansi"
     },
     "conflict": {
         "symfony/symfony": "*"
