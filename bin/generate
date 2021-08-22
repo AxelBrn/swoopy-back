@@ -1,0 +1,48 @@
+#!/usr/bin/env php
+<?php
+
+function random_str(
+    int $length = 64,
+    string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+): string {
+    if ($length < 1) {
+        throw new \RangeException("Length must be a positive integer");
+    }
+    $pieces = [];
+    $max = mb_strlen($keyspace, '8bit') - 1;
+    for ($i = 0; $i < $length; ++$i) {
+        $pieces []= $keyspace[random_int(0, $max)];
+    }
+    return implode('', $pieces);
+}
+
+function is_dir_empty(string $dir) {
+    if (!is_readable($dir)) return null; 
+    return (count(scandir($dir)) == 2);
+}
+
+$IS_BASH = isset($argv[1]) && $argv[1] === '-b';
+
+$PASS_PHRASE = random_str();
+
+if (!is_dir('./config/jwt')) {
+    if (strpos(strtolower(PHP_OS), "win") !== false) {
+        exec("Mkdir .\config\jwt");
+    } else {
+        exec("mkdir ./config/jwt");
+    }
+}
+
+if (!is_dir_empty('./config/jwt')) {
+    if (strpos(strtolower(PHP_OS), "win") !== false && !$IS_BASH) {
+        exec("Del .\config\jwt\*");
+    } else {
+        exec('rm -f ./config/jwt/*');
+    }
+}
+
+exec('ssh-keygen -t rsa -b 2048 -m PEM -f ./config/jwt/jwtRS256.key -N '.$PASS_PHRASE);
+exec('openssl rsa -in ./config/jwt/jwtRS256.key -passin pass:'.$PASS_PHRASE.' -pubout -outform PEM -out ./config/jwt/jwtRS256.key.pub');
+
+echo "\nSave this passphrase in your .env.local file : \n";
+echo $PASS_PHRASE;
