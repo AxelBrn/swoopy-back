@@ -21,7 +21,11 @@
         "symfony/runtime": "5.3.*",
         "symfony/security-bundle": "5.3.*",
         "symfony/twig-bundle": "5.3.*",
-        "symfony/yaml": "5.3.*"
+        "symfony/yaml": "5.3.*",
+        "web-token/jwt-core": "^2.2",
+        "web-token/jwt-key-mgmt": "^2.2",
+        "web-token/jwt-signature": "^2.2",
+        "web-token/jwt-signature-algorithm-rsa": "^2.2"
     },
     "config": {
         "optimize-autoloader": true,
