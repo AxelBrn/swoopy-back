@@ -441,6 +441,9 @@
     "symfony/security-http": {
         "version": "v5.3.6"
     },
+    "symfony/serializer": {
+        "version": "v5.3.4"
+    },
     "symfony/service-contracts": {
         "version": "v2.4.0"
     },
@@ -486,6 +489,9 @@
     },
     "twig/twig": {
         "version": "v3.3.2"
+    },
+    "web-token/jwt-checker": {
+        "version": "v2.2.10"
     },
     "web-token/jwt-core": {
         "version": "v2.2.10"
