@@ -36,7 +36,7 @@ class Project
     private $owner;
 
     /**
-     * @ORM\OneToMany(targetEntity=entity::class, mappedBy="project", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Entity::class, mappedBy="project", orphanRemoval=true)
      */
     private $entity;
 
