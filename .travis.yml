@@ -1,15 +1,17 @@
 language: php
 php:
-  - '7.4'
+  - "7.4"
 cache:
-    directories:
-        - $HOME/.composer/cache
+  directories:
+    - $HOME/.composer/cache
 env:
-    global:
-        - XDEBUG_MODE=coverage
+  global:
+    - XDEBUG_MODE=coverage
+before_install:
+  - wget https://get.symfony.com/cli/installer -O - | bash
 install:
-    - composer install
+  - composer install
 script:
-    - symfony check:security
-    - composer unit:test
-    - composer analyse
+  - symfony check:security
+  - composer unit:test
+  - composer analyse
