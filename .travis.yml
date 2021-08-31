@@ -9,6 +9,7 @@ env:
     - XDEBUG_MODE=coverage
 before_install:
   - wget https://get.symfony.com/cli/installer -O - | bash
+  - export PATH="$HOME/.symfony/bin:$PATH"
 install:
   - composer install
 script:
