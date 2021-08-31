@@ -9,8 +9,9 @@ use Symfony\Component\Serializer\Annotation\Ignore;
 /**
  * @author Axel Brionne
  */
-abstract class AbstractDto {
-    
+abstract class AbstractDto
+{
+
     private Request $request;
     private bool $isBuild;
 
@@ -28,7 +29,8 @@ abstract class AbstractDto {
      * Return an array of request data
      * @return array
      */
-    protected function getRequestContent(): array {
+    protected function getRequestContent(): array
+    {
         $object = [];
         if ($this->request->request->count() !== 0 || $this->request->getContent() !== '') {
             if ($this->request->request->count() === 0) {
@@ -44,7 +46,8 @@ abstract class AbstractDto {
      * @return bool 
      * @Ignore()
      */
-    public function isBuild(): bool {
+    public function isBuild(): bool
+    {
         return $this->isBuild;
     }
 
