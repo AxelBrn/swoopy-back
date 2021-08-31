@@ -10,5 +10,6 @@ env:
 install:
     - composer install
 script:
+    - symfony check:security
     - composer unit:test
     - composer analyse

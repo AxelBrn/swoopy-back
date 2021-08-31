@@ -3,11 +3,12 @@
 namespace App\Controller;
 
 use App\Dto\AuthDto;
+use App\Models\RefreshCookie;
+use App\Models\ResponseModel;
 use App\Repository\UserRepository;
 use App\Utils\JwtUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use OpenApi\Annotations as OA;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -21,8 +22,8 @@ class AuthController extends AbstractController
 {
 
     /**
+     * Authentication End-point
      * @Route("", name="login", methods={"POST"})
-     * @param Request $request
      * @param UserRepository $userRepository
      * @param AuthDto $authDto
      * @OA\RequestBody(
@@ -35,17 +36,50 @@ class AuthController extends AbstractController
      */
     public function auth(UserRepository $userRepository, AuthDto $authDto): Response
     {
-        $response = $this->json([
-            "message" => 'Invalid credentials'
-        ], 404);
+        $response = new ResponseModel(null, Response::HTTP_NOT_FOUND, 'Invalid credentials');
         if ($authDto->isBuild()) {
             $user = $userRepository->findOneBy(['username' => $authDto->username]);
             if ($user != null && password_verify($authDto->password, $user->getPassword()) === true) {
-                $response = $this->json([
+                $response->headers->setcookie(JwtUtils::generateRefreshCookie($user));
+                $response->setStatusCode(Response::HTTP_OK);
+                $response->setData([
                     'token' => JwtUtils::generateAccessToken($user),
-                ], 200);
+                ]);
+                $response->setMessage("Authentication Successfully");
             }
         }
+        return $response;
+    }
+
+    /**
+     * Refresh your access token
+     * @Route("/refresh", name="refresh_token", methods={"POST"})
+     * 
+     * @return Response
+     */
+    public function refresh(RefreshCookie $refreshCookie): Response
+    {
+        $response = new ResponseModel(null, Response::HTTP_NOT_FOUND, 'No token found');
+        $user = $refreshCookie->getUser();
+        if ($user !== null && $refreshCookie->isValid()) {
+            $response->headers->setcookie(JwtUtils::generateRefreshCookie($user));
+            $response->setData(['token' => JwtUtils::generateAccessToken($user)]);
+            $response->setStatusCode(Response::HTTP_OK);
+            $response->setMessage('Token successfully refresh');
+        }
+        return $response;
+    }
+
+    /**
+     * Delete refresh cookie
+     * @Route("/logout", name="logout", methods={"GET"})
+     * 
+     * @return Response
+     */
+    public function logout(): Response
+    {
+        $response = new ResponseModel(null, Response::HTTP_OK, 'Logout Successfully');
+        $response->headers->clearCookie("refreshToken");
         return $response;
     }
 }

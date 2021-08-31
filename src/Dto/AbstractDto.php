@@ -4,7 +4,11 @@ namespace App\Dto;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
+/**
+ * @author Axel Brionne
+ */
 abstract class AbstractDto {
     
     private Request $request;
@@ -28,7 +32,7 @@ abstract class AbstractDto {
         $object = [];
         if ($this->request->request->count() !== 0 || $this->request->getContent() !== '') {
             if ($this->request->request->count() === 0) {
-                $object = json_decode($this->request->getContent());
+                $object = json_decode($this->request->getContent(), true);
             } else {
                 $object = $this->request->request->all();
             }
@@ -38,6 +42,7 @@ abstract class AbstractDto {
 
     /**
      * @return bool 
+     * @Ignore()
      */
     public function isBuild(): bool {
         return $this->isBuild;

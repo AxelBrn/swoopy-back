@@ -35,7 +35,6 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
         if (null === $apiToken) {
             // The token header was empty, authentication fails with HTTP Status
             // Code 401 "Unauthorized"
-            dd("test");
             throw new CustomUserMessageAuthenticationException('No API token provided');
         } else {
             $apiToken = explode("Bearer ", $apiToken)[1];

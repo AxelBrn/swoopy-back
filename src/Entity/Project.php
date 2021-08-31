@@ -38,11 +38,11 @@ class Project
     /**
      * @ORM\OneToMany(targetEntity=Entity::class, mappedBy="project", orphanRemoval=true)
      */
-    private $entity;
+    private $entities;
 
     public function __construct()
     {
-        $this->entity = new ArrayCollection();
+        $this->entities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -87,17 +87,17 @@ class Project
     }
 
     /**
-     * @return Collection|entity[]
+     * @return Collection|Entity[]
      */
-    public function getEntity(): Collection
+    public function getEntities(): Collection
     {
-        return $this->entity;
+        return $this->entities;
     }
 
-    public function addEntity(entity $entity): self
+    public function addEntity(Entity $entity): self
     {
-        if (!$this->entity->contains($entity)) {
-            $this->entity[] = $entity;
+        if (!$this->entities->contains($entity)) {
+            $this->entities[] = $entity;
             $entity->setProject($this);
         }
 
@@ -106,7 +106,7 @@ class Project
 
     public function removeEntity(entity $entity): self
     {
-        if ($this->entity->removeElement($entity)) {
+        if ($this->entities->removeElement($entity)) {
             // set the owning side to null (unless already changed)
             if ($entity->getProject() === $this) {
                 $entity->setProject(null);
