@@ -19,10 +19,19 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-            - '../src/Tests/'
+
+    app.swoopy_authenticator:
+        class: App\Security\SwoopyAuthenticator
+        parent: lexik_jwt_authentication.security.jwt_authenticator
+
     App\EventListener\ExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+    App\EventListener\AuthListener:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_failure, method: onAuthenticationFailureResponse }
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

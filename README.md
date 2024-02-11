@@ -1,12 +1,11 @@
 # Swoopy API
-[![Build Status](https://travis-ci.com/AxelBrn/swoopy-back.svg?branch=develop)](https://travis-ci.com/AxelBrn/swoopy-back)
 
 ## Pre-requirement 
-- PHP 7.4 >=
+- PHP 8.2 >=
 - Composer 2
 - Symfony CLI
 - OpenSSL
-- PostgreSQL 13
+- MariaDB 10.11.X
 
 ## Project setup
 ```bash
@@ -18,9 +17,7 @@ composer install
 
 ```bash
 # This command create a RSA key pair for create JWT
-php bin/generate
-# If you use bash run :
-php bin/generate -b
+php bin/console lexik:jwt:generate-keypair
 ```
 
 ### Database Setup
