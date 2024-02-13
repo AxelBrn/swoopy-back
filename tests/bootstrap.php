@@ -17,8 +17,8 @@ passthru(sprintf(
     __DIR__
 ));
 passthru(sprintf(
-  'php "%s/../bin/console" --env=test doctrine:database:create',
-  __DIR__
+    'php "%s/../bin/console" --env=test doctrine:database:create',
+    __DIR__
 ));
 passthru(sprintf(
     'php "%s/../bin/console" --env=test doctrine:schema:create',

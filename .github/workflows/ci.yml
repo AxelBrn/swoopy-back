@@ -29,6 +29,9 @@ jobs:
       - name: PHP-STAN
         run: "composer run-script lint:phpstan"
 
+      - name: PHP-CS-FIXER
+        run: "composer run-script lint:cs-fixer"
+
   tests:
     name: Unit Tests PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
