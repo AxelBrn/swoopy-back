@@ -1,4 +1,6 @@
 {
+    "name": "swoopy/private-api",
+    "description": "Swoopy Private API",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
