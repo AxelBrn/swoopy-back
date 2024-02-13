@@ -9,7 +9,8 @@ use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 use Symfony\Component\HttpFoundation\Response;
 
-class AuthListener {
+class AuthListener
+{
     private SwoopyTokenManagerService $swoopyTokenManagerService;
 
     public function __construct(SwoopyTokenManagerService $swoopyTokenManagerService)

@@ -13,9 +13,10 @@ class SwoopyAuthenticator extends JWTAuthenticator
     {
         $passport = parent::doAuthenticate($request);
         $payload = $passport->getAttribute('payload');
-        if (empty($payload['type']) || $payload['type'] !== 'access_token') {
+        if (empty($payload['type']) || 'access_token' !== $payload['type']) {
             throw new InvalidTokenException('Invalid JWT Token.');
         }
+
         return $passport;
     }
 }

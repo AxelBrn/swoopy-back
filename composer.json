@@ -62,6 +62,8 @@
             "@auto-scripts"
         ],
         "lint:phpstan": "vendor/bin/phpstan analyse --ansi",
+        "lint:cs-fixer": "vendor/bin/php-cs-fixer check",
+        "fix:cs-fixer": "vendor/bin/php-cs-fixer fix",
         "unit:test": "bin/phpunit tests/Unit"
     },
     "conflict": {
