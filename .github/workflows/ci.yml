@@ -1,0 +1,65 @@
+name: PHP CI
+
+on: [push, pull_request]
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: PHP-STAN
+        run: composer run-script phpstan
+
+  tests:
+    name: Unit Tests PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [8.0, 8.1, 8.2, 8.3]
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: xdebug
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Create Database
+        run: |
+          mkdir -p data
+          touch data/database.sqlite
+      - name: Execute unit tests
+        env:
+          DATABASE_URL: sqlite:///%kernel.project_dir%/data/database.sqlite
+        run: "composer run-script unit:test"
