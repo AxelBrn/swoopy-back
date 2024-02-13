@@ -1,0 +1,6 @@
+[
+    [true, "test"],
+    [true, "test@swoopy.com"],
+    [false, "test@swoopy.fake"],
+    [false, "fake"]
+]
